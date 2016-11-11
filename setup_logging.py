@@ -1,5 +1,5 @@
 import os
-import logging.config
+import logging
 
 def setup_logging(
     default_path='access_6_logging.yaml',
@@ -21,3 +21,9 @@ def setup_logging(
         logging.config.dictConfig(config)
     else:
         logging.basicConfig(level=default_level)
+
+if __name__ == '__main__':
+    setup_logging()
+    logger = logging.getLogger()
+    logger.info('Success')
+
