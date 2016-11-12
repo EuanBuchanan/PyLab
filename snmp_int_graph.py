@@ -47,7 +47,8 @@ class Network_Devices(object):
         '''
         oid_int = int(snmp_extract(snmp_get_oid_v3(
              self.snmp_device, self.snmp_user, oid)))
-        return oid_int
+        timestamp = time.time()
+        return (timestamp, oid_int)
 
     def ret_oid_d(self):
         '''
