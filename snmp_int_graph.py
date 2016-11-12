@@ -100,11 +100,11 @@ def poller(devices_l, period=5, duration=10):
     end_time = time.time() + duration
     oid_d = defaultdict(list)
     while time.time() < end_time:
+        time.sleep(period)
         for device in devices_l:
             for oid, value in device.ret_oid_d().iteritems():
                 oid_d[oid].append(value)
             logger.info('oid_d %s', repr(oid_d))
-        time.sleep(period)
     logger.info('Polling completed')
     return oid_d
 
@@ -128,6 +128,9 @@ def main():
     device_d = load_yaml()
     devices_l = create_objects(device_d)
     oid_d = poller(devices_l)
+    save_object_yaml(oid_d)
+    loaded_oid = load_object_yaml()
+    print(loaded_oid)
 if __name__ == '__main__':
     setup_logging()
     main()
