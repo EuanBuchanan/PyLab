@@ -12,5 +12,5 @@ defaults: &rtr_defaults
 
 routers: 
   pynet-rtr2:
-    device_ip: '184.105.247.71'
+    ip: '184.105.247.71'
     <<: *rtr_defaults
