@@ -93,7 +93,7 @@ def create_objects(device_d):
     logger.info('Network objects created')
     return device_l
 
-def poller(devices_l, period=5, duration=10):
+def poller(devices_l, period=300, duration=3600):
 
     logger = logging.getLogger('poller')
     logger.info('Polling for %s seconds with period %s seconds', duration,\
