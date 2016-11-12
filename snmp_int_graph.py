@@ -11,7 +11,7 @@ unicast packets received and transmitted
 '''
 import yaml
 from setup_logging import setup_logging
-from collections import namedtuple
+from collections import namedtuple, defaultdict
 import logging
 from snmp_helper import snmp_get_oid_v3, snmp_extract
 import time
@@ -49,21 +49,18 @@ class Network_Devices(object):
              self.snmp_device, self.snmp_user, oid)))
         return oid_int
 
-    def ret_oid_nt(self):
+    def ret_oid_d(self):
         '''
-        Gathers SNMP polling data. Saves to list and writes to YAML file for
-        persistence
+        Gathers SNMP polling data. Returns dictionary
         '''
-        logger = logging.getLogger('ret_oid_nt')
-        OID = namedtuple('OID', 'ifInOctets_fa4 ifInUcastPkts_fa4 \
-                ifOutUcastPkts_fa4 ifOutOctets_fa4')
-        oid_nt = OID(
-            self.get_oid(self.ifInOctets_fa4),
-            self.get_oid(self.ifInUcastPkts_fa4),
-            self.get_oid(self.ifOutUcastPkts_fa4),
-            self.get_oid(self.ifOutOctets_fa4))
-        logger.info('oid_nt %s', oid_nt)
-        return oid_nt
+        logger = logging.getLogger('ret_oid_d')
+        oid_d = {
+            self.ifInOctets_fa4: self.get_oid(self.ifInOctets_fa4),
+            self.ifInUcastPkts_fa4: self.get_oid(self.ifInUcastPkts_fa4),
+            self.ifOutUcastPkts_fa4: self.get_oid(self.ifOutUcastPkts_fa4),
+            self.ifOutOctets_fa4: self.get_oid(self.ifOutOctets_fa4)}
+        logger.debug('oid_d %s', oid_d)
+        return oid_d
 
 def load_yaml():
     '''
@@ -95,20 +92,34 @@ def create_objects(device_d):
     logger.info('Network objects created')
     return device_l
 
-def poller(devices_l, period=5, duration=3600):
+def poller(devices_l, period=5, duration=10):
 
     logger = logging.getLogger('poller')
-    logger.info('Polling for %s seconds with period %s seconds', duration, period)
+    logger.info('Polling for %s seconds with period %s seconds', duration,\
+            period)
     end_time = time.time() + duration
-    oid_l = []
+    oid_d = defaultdict(list)
     while time.time() < end_time:
         for device in devices_l:
-            oid_l.append(device.ret_oid_nt())
-            print oid_l
+            for oid, value in device.ret_oid_d().iteritems():
+                oid_d[oid].append(value)
+            logger.info('oid_d %s', repr(oid_d))
         time.sleep(period)
     logger.info('Polling completed')
-    return oid_l
+    return oid_d
 
+def save_object_yaml(py_object, yaml_file='default.yaml'):
+    '''
+    Helper function that save a python object to a yaml file
+    '''
+    with open(yaml_file, 'w') as outfile:
+        yaml.dump(py_object, outfile, default_flow_style=False)
+    return True
+
+def load_object_yaml(yaml_file='default.yaml'):
+    with open(yaml_file, 'r') as infile:
+        oid_l = yaml.load(infile)
+    return oid_l
 
 
 def main():
@@ -116,8 +127,7 @@ def main():
     logger = logging.getLogger('main')
     device_d = load_yaml()
     devices_l = create_objects(device_d)
-    oid_l = poller(devices_l)
-    
+    oid_d = poller(devices_l)
 if __name__ == '__main__':
     setup_logging()
     main()
