@@ -1,0 +1,15 @@
+---
+defaults: &rtr_defaults
+  snmp_username: 'pysnmp'
+  aut_key: 'galileo1'
+  encrypt_key: 'galileo1'
+  snmp_port: '161'
+  running_last_changed: '1.3.6.1.4.1.9.9.43.1.1.1.0'
+  running_last_saved: '1.3.6.1.4.1.9.9.43.1.1.1.0'
+  startup_last_changed: '1.3.6.1.4.1.9.9.43.1.1.3.0'
+
+routers: 
+  pynet-rtr2:
+    device_ip: '184.105.247.71'
+    <<: *rtr_defaults
+
