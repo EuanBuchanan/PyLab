@@ -14,3 +14,7 @@ routers:
   pynet-rtr1:
     ip: '184.105.247.70'
     <<: *rtr_defaults
+
+  pynet-rtr2:
+    ip: '184.105.247.71'
+    <<: *rtr_defaults
