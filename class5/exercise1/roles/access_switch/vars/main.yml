@@ -1,5 +1,5 @@
 ---
-switches: 
+switches:
   - {hostname: switch_1, secret: skynet, vlan1_ip: 192.168.1.0, 
     default_gateway: 192.168.1.1, access_vlan: 10, snmp_community: trixie}
   - {hostname: switch_2, secret: skynet, vlan1_ip: 192.168.2.0, 
