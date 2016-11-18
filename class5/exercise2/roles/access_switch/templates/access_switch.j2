@@ -10,6 +10,15 @@ enable secret 0 {{ item.secret }}
 !
 !
 !
+{% if item.SNMPv3 %}
+access-list 98 remark *** SNMP ***
+access-list 98 permit any
+!
+snmp-server view VIEWSTD iso included
+snmp-server group READONLY v3 priv read VIEWSTD access 98
+snmp-server user pysnmp READONLY v3 auth sha auth_key priv aes 128 encrypt_key
+{% endif %}
+
 interface FastEthernet0/1
  switchport access vlan
  switchport mode access {{ item.access_vlan }}
