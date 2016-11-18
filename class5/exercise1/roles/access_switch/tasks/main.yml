@@ -1,0 +1,4 @@
+---
+- name: Generate access_site configs
+  template: src=access_switch.j2 dest=/home/ebuchanan/PyLab/class5/exercise1/CONFIGS/{{item.hostname}}.txt
+  with_items: "{{ switches }}"
