@@ -1,0 +1,12 @@
+---
+switches:
+  - {hostname: switch_1, secret: skynet, vlan1_ip: 192.168.1.0, 
+    default_gateway: 192.168.1.1, access_vlan: 10, snmp_community: trixie}
+  - {hostname: switch_2, secret: skynet, vlan1_ip: 192.168.2.0, 
+    default_gateway: 192.168.2.1, access_vlan: 20, snmp_community: trixie}
+  - {hostname: switch_3, secret: skynet, vlan1_ip: 192.168.3.0, 
+    default_gateway: 192.168.3.1, access_vlan: 30, snmp_community: trixie}
+  - {hostname: switch_4, secret: skynet, vlan1_ip: 192.168.4.0, 
+    default_gateway: 192.168.4.1, access_vlan: 40, snmp_community: trixie}
+  - {hostname: switch_5, secret: skynet, vlan1_ip: 192.168.5.0, 
+    default_gateway: 192.168.5.1, access_vlan: 50, snmp_community: trixie}
